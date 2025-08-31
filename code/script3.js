@@ -1,8 +1,8 @@
 const canvas = document.getElementById("canvas1");
 const ctx = canvas.getContext("2d");
 
-ctx.canvas.width = window.innerWidth;
-ctx.canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
+canvas.height = document.documentElement.scrollHeight;
 
 let circleParticlesArray = [];
 let triangleParticlesArray = [];
@@ -10,6 +10,22 @@ let squareParticlesArray = [];
 let polygonParticlesArray = [];
 let diamondParticlesArray = [];
 
+let colors = ["rgba(3,252,157,0.5)", "rgba(8, 230, 0, 0.77)", "rgba(252, 69, 3, 0.66)", "rgba(248, 252, 3, 0.8)", "rgba(3, 177, 252, 0.7)", "rgba(252, 3, 3, 0.69)", "rgba(103, 122, 112, 0.8)", "rgba(122, 233, 174, 0.6)", "rgba(255, 255, 255, 0.5)"];
+
+window.addEventListener("resize", () => {
+    canvas.height = window.innerHeight;
+    canvas.width = document.documentElement.scrollHeight;
+
+    // circleInit();
+    // squareInit();
+})
+
+function particleHandler(particleArray) {
+    for (let i = 0; i < particleArray.length; i++) {
+        particleArray[i].update();
+        particleArray[i].draw();
+    }
+}
 
 class CircleParticles {
     constructor(ctx, x, y, size, color, lineWidth) {
@@ -29,9 +45,36 @@ class CircleParticles {
         this.ctx.stroke();
     }
 
-    // update() {
-    // }
+    update(scrollOffset = 0) {
+        const drift = scrollOffset * 0.02;
+        this.y -= 0.3;
+        this.x += Math.random() * canvas.width * 0.0001;
+
+        this.y += drift
+    }
 }
+
+function circleInit() {
+    for (let i = 0; i < 6; i++) {
+        let x = Math.random() * canvas.width;
+        let y = Math.random() * canvas.height;
+        let size = Math.random() * 15 + 5; // b/w 5 - 13
+        let lineWidth = Math.random() * 4 + 3;
+
+        let color = colors[Math.floor(Math.random() * colors.length)];
+
+        circleParticlesArray.push(new CircleParticles(
+            ctx,
+            x,
+            y,
+            size,
+            color,
+            lineWidth
+        ))
+    }
+}
+
+circleInit();
 
 class SquareParticles {
     constructor(ctx, x, y, l, b, color, lineWidth, joinStyle = "miter") {
@@ -59,9 +102,38 @@ class SquareParticles {
         this.ctx.stroke();
     }
 
-    // update() {
-    // }
+    update(scrollOffset = 0) {
+        const drift = scrollOffset * 0.002;
+        this.lineWidth = 0.5 + Math.sin(Date.now() * 0.0004 + this.x) * 0.5
+        this.y += drift
+    }
 }
+
+const squareInit = () => {
+    for (let i = 0; i < 8; i++) {
+        let x = Math.random() * canvas.width;
+        let y = Math.random() * canvas.height;
+        let l = Math.random() * 50 + 10;
+        let b = Math.random() * 50 + 10;
+
+        let lineWidth = Math.random() * 6 + 1;
+
+        let color = colors[Math.floor(Math.random() * colors.length)];
+
+        squareParticlesArray.push(new SquareParticles(
+            ctx,
+            x,
+            y,
+            l,
+            b,
+            color,
+            lineWidth,
+            "round"
+        ))
+    }
+}
+
+squareInit();
 
 class TriangleParticles {
     constructor(ctx, x, y, x1, y1, x2, y2, lineWidth, color, joinStyle = "miter") {
@@ -91,10 +163,41 @@ class TriangleParticles {
         this.ctx.stroke();
     }
 
-    // update() {
-    // }
+    update(scrollOffset = 0) {
+        const drift = scrollOffset * 0.02;
+        this.y += Math.sin(Date.now() * 0.0001 + this.x) * 0.8;
+        this.y1 += Math.sin(Date.now() * 0.0001 + this.x) * 0.8;
+        this.y2 += Math.sin(Date.now() * 0.0001 + this.x) * 0.8;
+
+        this.y += drift;
+        this.y1 += drift;
+        this.y2 += drift;
+    }
 }
 
+const triangleInit = () => {
+    for (let i = 0; i < 4; i++) {
+        let x = Math.random() * canvas.width;
+        let y = Math.random() * canvas.height;
+        let h = Math.random() * 40 + 20;
+        let b = Math.random() * 40 + 20;
+
+        let x1 = x + b / 2;
+        let x2 = x - b / 2;
+        let y1 = y + h;
+        let y2 = y + h;
+
+        let lineWidth = Math.random() * 3 + 1;
+
+        let color = colors[Math.floor(Math.random() * colors.length)];
+
+        triangleParticlesArray.push(new TriangleParticles(
+            ctx, x, y, x1, y1, x2, y2, lineWidth, color
+        ))
+    }
+}
+
+triangleInit();
 
 class PolygonParticles {
     constructor(ctx, x, y, radius, sides, lineWidth, color, joinStyle = "miter") {
@@ -125,9 +228,37 @@ class PolygonParticles {
         this.ctx.stroke();
     }
 
-    // update() {
-    // }
+    update(scrollOffset = 0) {
+        const drift = scrollOffset * 0.02;
+        this.y += Math.sin(Date.now() * 0.001 + this.x) * 0.2;
+        this.y += drift;
+    }
 }
+
+const polygonInit = () => {
+    for (let i = 0; i < 3; i++) {
+        let x = Math.random() * canvas.width;
+        let y = Math.random() * canvas.height;
+        let radius = Math.random() * 40 + 10;
+        let sides = Math.random() * 1 + 5;
+
+        let lineWidth = Math.random() * 15 + 1;
+
+        let color = colors[Math.floor(Math.random() * colors.length)];
+
+        polygonParticlesArray.push(new PolygonParticles(
+            ctx,
+            x,
+            y,
+            radius,
+            sides,
+            color,
+            lineWidth,
+            "round"
+        ))
+    }
+}
+polygonInit();
 
 class DiamondParticles {
     constructor(ctx, x, y, w, h, lineWidth, color, joinStyle = "miter") {
@@ -155,99 +286,39 @@ class DiamondParticles {
         this.ctx.stroke();
     }
 
-    // update() {
-    // }
+    update(scrollOffset = 0) {
+        const drift = scrollOffset * 0.002;
+        this.y += 0.3;
+        this.y += drift;
+    }
 }
 
-// Particle.prototype.drawCircle = function (lineWidth, color, ix, iy, size) {
-//     ctx.beginPath();
-//     ctx.arc(ix, iy, size, 0, Math.PI * 2, false);
-//     ctx.strokeStyle = color;
-//     ctx.lineWidth = lineWidth
-//     ctx.stroke();
-// }
+const diamondInit = () => {
+    for (let i = 0; i < 5; i++) {
+        let x = Math.random() * canvas.width;
+        let y = Math.random() * canvas.height;
+        let h = Math.random() * 40 + 20;
+        let w = Math.random() * 15 + 20;
 
+        let lineWidth = Math.random() * 2 + 1;
+        let color = colors[Math.floor(Math.random() * colors.length)];
 
-// Particle.prototype.drawTriangle = function (ix, iy, x1, y1, x2, y2, lineWidth, color, joinStyle = "miter") {
-//     ctx.beginPath();
+        diamondParticlesArray.push(new DiamondParticles(
+           ctx, x, y, w, h, lineWidth, color,
+        ))
+    }
+}
+diamondInit();
 
-//     ctx.moveTo(ix, iy)
-//     ctx.lineTo(x1, y1);
-//     ctx.lineTo(x2, y2);
-//     ctx.closePath();
+function animateSquares() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-//     ctx.lineJoin = joinStyle;
-//     ctx.strokeStyle = color;
-//     ctx.lineWidth = lineWidth
-//     ctx.stroke();
-// }
+    particleHandler(polygonParticlesArray);
+    particleHandler(squareParticlesArray);
+    particleHandler(circleParticlesArray);
+    particleHandler(triangleParticlesArray);
+    particleHandler(diamondParticlesArray)
 
-
-// Particle.prototype.drawSquare = function (ix, iy, l, b, lineWidth, color, joinStyle = "miter") {
-//     ctx.beginPath();
-
-//     ctx.moveTo(ix, iy);
-//     ctx.lineTo(ix + l, iy);
-//     ctx.lineTo(ix + l, iy + b)
-//     ctx.lineTo(ix, iy + b);
-
-//     ctx.strokeStyle = color;
-//     ctx.lineWidth = lineWidth
-//     ctx.lineJoin = joinStyle
-//     ctx.closePath();
-
-//     ctx.stroke()
-// }
-
-
-// Particle.prototype.drawPolygon = function (x, y, radius, sides, lineWidth, color, joinStyle = "miter") {
-//     if (sides < 3) return;
-//     ctx.beginPath();
-//     for (let i = 0; i < sides; i++) {
-//         let angle = (i * 2 * Math.PI) / sides;
-//         let px = x + radius * Math.cos(angle);
-//         let py = y + radius * Math.sin(angle);
-//         if (i === 0) ctx.moveTo(px, py);
-//         else ctx.lineTo(px, py);
-//     }
-//     ctx.closePath();
-//     ctx.strokeStyle = color;
-//     ctx.lineWidth = lineWidth;
-//     ctx.lineJoin = joinStyle
-//     ctx.stroke();
-// };
-
-
-// Particle.prototype.drawDiamond = function (x, y, w, h, lineWidth, color, joinStyle = "miter") {
-//     ctx.beginPath();
-//     ctx.moveTo(x, y - h / 2);
-//     ctx.lineTo(x + w / 2, y);
-//     ctx.lineTo(x, y + h / 2);
-//     ctx.lineTo(x - w / 2, y);
-//     ctx.closePath();
-//     ctx.strokeStyle = color;
-//     ctx.lineWidth = lineWidth;
-//     ctx.lineJoin = joinStyle
-
-//     ctx.stroke();
-// };
-
-
-// const circles = new Particle(1, 1);
-// const triangles = new Particle(1, 1);
-// const squares = new Particle(1, 1);
-// const polygons = new Particle(1, 1);
-// const diamonds = new Particle(1, 1);
-
-circles.drawCircle(8, "rgb(94,90,90,0.4)", 100, 100, 25);
-
-triangles.drawTriangle(200, 200, 225, 240, 175, 240, 4, "rgba(12,90,135,0.8)");
-polygons.drawPolygon(400, 400, 80, 6, 5, "red", "round");
-
-squares.drawSquare(300, 300, 50, 50, 4, "rgba(12,90,135,0.8)", "round");
-
-polygons.drawPolygon(500, 500, 30, 5, 5, "rgba(28, 173, 67, 0.5)");
-
-diamonds.drawDiamond(400, 40, 40, 45, 3, "red");
-
-squares.drawSquare(300, 100, 120, 120, 6, "rgba(12,90,255,0.8)", "round")
+    requestAnimationFrame(animateSquares);
+}
+requestAnimationFrame(animateSquares);
