@@ -4,7 +4,12 @@ const ctx = canvas.getContext("2d");
 ctx.canvas.width = window.innerWidth;
 ctx.canvas.height = window.innerHeight;
 
-let particlesArray = [];
+let circleParticlesArray = [];
+let triangleParticlesArray = [];
+let squareParticlesArray = [];
+let polygonParticlesArray = [];
+let diamondParticlesArray = [];
+
 
 class CircleParticles {
     constructor(ctx, x, y, size, color, lineWidth) {
@@ -17,11 +22,11 @@ class CircleParticles {
     }
 
     draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-        ctx.strokeStyle = this.color;
-        ctx.lineWidth = this.lineWidth;
-        ctx.stroke();
+        this.ctx.beginPath();
+        this.ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+        this.ctx.strokeStyle = this.color;
+        this.ctx.lineWidth = this.lineWidth;
+        this.ctx.stroke();
     }
 
     // update() {
@@ -41,17 +46,17 @@ class SquareParticles {
     }
 
     draw() {
-        ctx.beginPath();
-        ctx.moveTo(ix, iy);
-        ctx.lineTo(ix + l, iy);
-        ctx.lineTo(ix + l, iy + b);
-        ctx.lineTo(ix, iy + b);
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.x, this.y);
+        this.ctx.lineTo(this.x + this.l, this.y);
+        this.ctx.lineTo(this.x + this.l, this.y + this.b);
+        this.ctx.lineTo(this.x, this.y + this.b);
 
-        ctx.strokeStyle = color;
-        ctx.lineWidth = lineWidth;
-        ctx.lineJoin = joinStyle;
-        ctx.closePath();
-        ctx.stroke();
+        this.ctx.strokeStyle = this.color;
+        this.ctx.lineWidth = this.lineWidth;
+        this.ctx.lineJoin = this.joinStyle;
+        this.ctx.closePath();
+        this.ctx.stroke();
     }
 
     // update() {
@@ -73,17 +78,17 @@ class TriangleParticles {
     }
 
     draw() {
-        ctx.beginPath();
+        this.ctx.beginPath();
 
-        ctx.moveTo(this.x, this.y);
-        ctx.lineTo(this.x1, this.y1);
-        ctx.lineTo(this.x2, this.y2);
-        ctx.closePath();
+        this.ctx.moveTo(this.x, this.y);
+        this.ctx.lineTo(this.x1, this.y1);
+        this.ctx.lineTo(this.x2, this.y2);
+        this.ctx.closePath();
 
-        ctx.lineJoin = this.joinStyle;
-        ctx.strokeStyle = this.color;
-        ctx.lineWidth = this.lineWidth;
-        ctx.stroke();
+        this.ctx.lineJoin = this.joinStyle;
+        this.ctx.strokeStyle = this.color;
+        this.ctx.lineWidth = this.lineWidth;
+        this.ctx.stroke();
     }
 
     // update() {
@@ -105,19 +110,19 @@ class PolygonParticles {
 
     draw() {
         if (this.sides < 3) return;
-        ctx.beginPath();
+        this.ctx.beginPath();
         for (let i = 0; i < this.sides; i++) {
             let angle = (i * 2 * Math.PI) / this.sides;
-            let px = x + radius * Math.cos(angle);
-            let py = y + radius * Math.sin(angle);
-            if (i === 0) ctx.moveTo(px, py);
-            else ctx.lineTo(px, py);
+            let px = this.x + this.radius * Math.cos(angle);
+            let py = this.y + this.radius * Math.sin(angle);
+            if (i === 0) this.ctx.moveTo(px, py);
+            else this.ctx.lineTo(px, py);
         }
-        ctx.closePath();
-        ctx.strokeStyle = color;
-        ctx.lineWidth = lineWidth;
-        ctx.lineJoin = joinStyle
-        ctx.stroke();
+        this.ctx.closePath();
+        this.ctx.strokeStyle = this.color;
+        this.ctx.lineWidth = this.lineWidth;
+        this.ctx.lineJoin = this.joinStyle
+        this.ctx.stroke();
     }
 
     // update() {
@@ -125,7 +130,8 @@ class PolygonParticles {
 }
 
 class DiamondParticles {
-    constructor(x, y, w, h, lineWidth, color, joinStyle = "miter") {
+    constructor(ctx, x, y, w, h, lineWidth, color, joinStyle = "miter") {
+        this.ctx = ctx;
         this.x = x;
         this.y = y;
         this.w = w;
@@ -136,17 +142,17 @@ class DiamondParticles {
     }
 
     draw() {
-        ctx.beginPath();
-        ctx.moveTo(this.x, this.y - this.h / 2);
-        ctx.lineTo(this.x + this.w / 2, this.y);
-        ctx.lineTo(this.x, this.y + this.h / 2);
-        ctx.lineTo(this.x - this.w / 2, this.y);
-        ctx.closePath();
-        ctx.strokeStyle = this.color;
-        ctx.lineWidth = this.lineWidth;
-        ctx.lineJoin = this.joinStyle
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.x, this.y - this.h / 2);
+        this.ctx.lineTo(this.x + this.w / 2, this.y);
+        this.ctx.lineTo(this.x, this.y + this.h / 2);
+        this.ctx.lineTo(this.x - this.w / 2, this.y);
+        this.ctx.closePath();
+        this.ctx.strokeStyle = this.color;
+        this.ctx.lineWidth = this.lineWidth;
+        this.ctx.lineJoin = this.joinStyle
 
-        ctx.stroke();
+        this.ctx.stroke();
     }
 
     // update() {
