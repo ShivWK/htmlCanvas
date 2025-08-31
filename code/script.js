@@ -20,9 +20,13 @@ function createCircleHandler(e) {
     mouse.x = e.x;
     mouse.y = e.y;
     // createCircle()
+
+    // for (let i = 0; i < 100; i++) {
+    //     particlesArray.push(new Particle());
+    // }
 }
- 
-// canvas.addEventListener("click", createCircleHandler);
+
+canvas.addEventListener("click", createCircleHandler);
 canvas.addEventListener("mousemove", createCircleHandler);
 
 function createCircle() {
@@ -38,6 +42,8 @@ function createCircle() {
 
 class Particle {
     constructor() {
+        // this.x = mouse.x;
+        // this.y = mouse.y;
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
         this.size = Math.random() * 5 + 1;
@@ -48,6 +54,8 @@ class Particle {
     update() {
         this.x += this.speedX;
         this.y += this.speedY;
+
+        // if (this.size > 0.2) this.size -= 0.1;
     }
 
     draw() {
@@ -71,6 +79,12 @@ function handleParticles() {
     for (let i = 0; i < particlesArray.length; i++) {
         particlesArray[i].update();
         particlesArray[i].draw();
+
+        // if (particlesArray[i].size <= 0.3) {
+        //     particlesArray.splice(i, 1);
+        //     i--;
+        //     // console.log(particlesArray.length)
+        // }
     }
 }
 
@@ -80,4 +94,4 @@ function animate() {
     requestAnimationFrame(animate); // learn
 }
 
-animate()
+requestAnimationFrame(animate);
