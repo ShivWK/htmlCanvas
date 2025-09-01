@@ -9,12 +9,13 @@ let triangleParticlesArray = [];
 let squareParticlesArray = [];
 let polygonParticlesArray = [];
 let diamondParticlesArray = [];
+let hexagonParticlesArray = [];
 
 let colors = ["rgba(3,252,157,0.5)", "rgba(8, 230, 0, 0.77)", "rgba(252, 69, 3, 0.66)", "rgba(248, 252, 3, 0.8)", "rgba(3, 177, 252, 0.7)", "rgba(252, 3, 3, 0.69)", "rgba(103, 122, 112, 0.8)", "rgba(122, 233, 174, 0.6)", "rgba(255, 255, 255, 0.5)"];
 
 window.addEventListener("resize", () => {
-    canvas.height = window.innerHeight;
-    canvas.width = document.documentElement.scrollHeight;
+    canvas.width = window.innerWidth;
+    canvas.height = document.documentElement.scrollHeight;
 
     // circleInit();
     // squareInit();
@@ -35,6 +36,7 @@ class CircleParticles {
         this.size = size;
         this.color = color;
         this.lineWidth = lineWidth;
+        this.direction = 1;
     }
 
     draw() {
@@ -47,19 +49,26 @@ class CircleParticles {
 
     update(scrollOffset = 0) {
         const drift = scrollOffset * 0.02;
-        this.y -= 0.3;
-        this.x += Math.random() * canvas.width * 0.0001;
 
+        if (this.y > canvas.height + 60) {
+            this.direction = -1;
+        } else if (this.y < 0 - 60) {
+            this.direction = 1;
+        }
+
+        this.y += this.direction * 0.3;
+
+        this.x += Math.random() * canvas.width * 0.0001;
         this.y += drift
     }
 }
 
 function circleInit() {
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 8; i++) {
         let x = Math.random() * canvas.width;
         let y = Math.random() * canvas.height;
-        let size = Math.random() * 15 + 5; // b/w 5 - 13
-        let lineWidth = Math.random() * 4 + 3;
+        let size = Math.random() * 30 + 8;
+        let lineWidth = Math.random() * 10 + 3;
 
         let color = colors[Math.floor(Math.random() * colors.length)];
 
@@ -110,7 +119,7 @@ class SquareParticles {
 }
 
 const squareInit = () => {
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 30; i++) {
         let x = Math.random() * canvas.width;
         let y = Math.random() * canvas.height;
         let l = Math.random() * 50 + 10;
@@ -176,7 +185,7 @@ class TriangleParticles {
 }
 
 const triangleInit = () => {
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 8; i++) {
         let x = Math.random() * canvas.width;
         let y = Math.random() * canvas.height;
         let h = Math.random() * 40 + 20;
@@ -235,14 +244,50 @@ class PolygonParticles {
     }
 }
 
+class HexagonParticles {
+    constructor(ctx, x, y, sides, lineWidth, color, joinStyle = "miter") {
+        this.ctx = ctx;
+        this.x = x;
+        this.y = y;
+        this.s = sides;
+        this.lineWidth = lineWidth;
+        this.color = color;
+        this.joinStyle = joinStyle;
+    }
+
+    draw() {
+        if (this.s < 3) return;
+        this.ctx.beginPath();
+        
+        this.ctx.moveTo(this.x, this.y);
+        this.ctx.lineTo((this.x + this.s), this.y);
+        this.ctx.lineTo((this.x + this.s + this.s/2), (this.y + 1.732 * this.s/2 ));
+        this.ctx.lineTo((this.x + this.s), (this.y + 2*(1.732 * this.s/2) ));
+        this.ctx.lineTo(this.x, (this.y + 2*(1.732 * this.s/2) ));
+        this.ctx.lineTo((this.x - this.s/2), (this.y + 1.732 * this.s/2 ));
+
+        this.ctx.closePath();
+        this.ctx.strokeStyle = this.color;
+        this.ctx.lineWidth = this.lineWidth;
+        this.ctx.lineJoin = this.joinStyle
+        this.ctx.stroke();
+    }
+
+    update(scrollOffset = 0) {
+        const drift = scrollOffset * 0.02;
+        this.y += Math.sin(Date.now() * 0.001 + this.x) * 0.2;
+        this.y += drift;
+    }
+}
+
 const polygonInit = () => {
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 5; i++) {
         let x = Math.random() * canvas.width;
         let y = Math.random() * canvas.height;
         let radius = Math.random() * 40 + 10;
-        let sides = Math.random() * 1 + 5;
+        let sides = Math.random() * 5;
 
-        let lineWidth = Math.random() * 15 + 1;
+        let lineWidth = Math.random() * 30 + 8;
 
         let color = colors[Math.floor(Math.random() * colors.length)];
 
@@ -260,6 +305,29 @@ const polygonInit = () => {
 }
 polygonInit();
 
+const hexagonInit = () => {
+    for (let i = 0; i < 5; i++) {
+        let x = Math.random() * canvas.width;
+        let y = Math.random() * canvas.height;
+        let sides = Math.random() * 80 + 20;
+
+        let lineWidth = Math.random() * 30 + 8;
+
+        let color = colors[Math.floor(Math.random() * colors.length)];
+
+        hexagonParticlesArray.push(new HexagonParticles(
+            ctx,
+            x,
+            y,
+            sides,
+            color,
+            lineWidth,
+            "round"
+        ))
+    }
+}
+hexagonInit();
+
 class DiamondParticles {
     constructor(ctx, x, y, w, h, lineWidth, color, joinStyle = "miter") {
         this.ctx = ctx;
@@ -270,6 +338,7 @@ class DiamondParticles {
         this.lineWidth = lineWidth;
         this.color = color;
         this.joinStyle = joinStyle;
+        this.direction = 1;
     }
 
     draw() {
@@ -288,7 +357,14 @@ class DiamondParticles {
 
     update(scrollOffset = 0) {
         const drift = scrollOffset * 0.002;
-        this.y += 0.3;
+
+        if (this.y > canvas.height + 100) {
+            this.direction = -1;
+        } else if (this.y < 0 - 100) {
+            this.direction = 1;
+        }
+
+        this.y += this.direction * 0.38;
         this.y += drift;
     }
 }
@@ -304,7 +380,7 @@ const diamondInit = () => {
         let color = colors[Math.floor(Math.random() * colors.length)];
 
         diamondParticlesArray.push(new DiamondParticles(
-           ctx, x, y, w, h, lineWidth, color,
+            ctx, x, y, w, h, lineWidth, color,
         ))
     }
 }
@@ -313,11 +389,13 @@ diamondInit();
 function animateSquares() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    particleHandler(polygonParticlesArray);
+    // particleHandler(polygonParticlesArray);
+    particleHandler(hexagonParticlesArray)
+
     particleHandler(squareParticlesArray);
     particleHandler(circleParticlesArray);
     particleHandler(triangleParticlesArray);
-    particleHandler(diamondParticlesArray)
+    particleHandler(diamondParticlesArray);
 
     requestAnimationFrame(animateSquares);
 }
