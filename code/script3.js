@@ -7,7 +7,7 @@ canvas.height = document.documentElement.scrollHeight;
 let circleParticlesArray = [];
 let triangleParticlesArray = [];
 let squareParticlesArray = [];
-let polygonParticlesArray = [];
+let pentagonParticlesArray = [];
 let diamondParticlesArray = [];
 let hexagonParticlesArray = [];
 
@@ -36,7 +36,8 @@ class CircleParticles {
         this.size = size;
         this.color = color;
         this.lineWidth = lineWidth;
-        this.direction = 1;
+        this.directionY = 1;
+        this.directionX = 1;
     }
 
     draw() {
@@ -51,14 +52,20 @@ class CircleParticles {
         const drift = scrollOffset * 0.02;
 
         if (this.y > canvas.height + 60) {
-            this.direction = -1;
+            this.directionY = -1;
         } else if (this.y < 0 - 60) {
-            this.direction = 1;
+            this.directionY = 1;
         }
 
-        this.y += this.direction * 0.3;
+        this.y += this.directionY * 0.3;
 
-        this.x += Math.random() * canvas.width * 0.0001;
+        if (this.x > canvas.width + 10) {
+            this.directionX = -1;
+        } else if (this.x < 0 - 10) {
+            this.directionX = 1;
+        }
+
+        this.x += this.directionX * Math.random() * canvas.width * 0.0001;
         this.y += drift
     }
 }
@@ -125,7 +132,7 @@ const squareInit = () => {
         let l = Math.random() * 50 + 10;
         let b = Math.random() * 50 + 10;
 
-        let lineWidth = Math.random() * 6 + 1;
+        let lineWidth = Math.random() * 50 + 20;
 
         let color = colors[Math.floor(Math.random() * colors.length)];
 
@@ -208,28 +215,26 @@ const triangleInit = () => {
 
 triangleInit();
 
-class PolygonParticles {
-    constructor(ctx, x, y, radius, sides, lineWidth, color, joinStyle = "miter") {
+class PentagonParticles {
+    constructor(ctx, x, y, sides, lineWidth, color, joinStyle = "miter") {
         this.ctx = ctx;
         this.x = x;
         this.y = y;
-        this.radius = radius;
-        this.sides = sides;
+        this.s = sides;
         this.lineWidth = lineWidth;
         this.color = color;
         this.joinStyle = joinStyle;
     }
 
     draw() {
-        if (this.sides < 3) return;
         this.ctx.beginPath();
-        for (let i = 0; i < this.sides; i++) {
-            let angle = (i * 2 * Math.PI) / this.sides;
-            let px = this.x + this.radius * Math.cos(angle);
-            let py = this.y + this.radius * Math.sin(angle);
-            if (i === 0) this.ctx.moveTo(px, py);
-            else this.ctx.lineTo(px, py);
-        }
+        
+        this.ctx.moveTo(this.x, this.y);
+        this.ctx.lineTo((this.x + this.s/2), this.y + (1.732 * (this.s/2)));
+        this.ctx.lineTo((this.x + this.s/2), this.y + this.s + (1.732 * (this.s/2)));
+        this.ctx.lineTo((this.x - this.s/2), this.y + this.s + (1.732 * (this.s/2)));
+        this.ctx.lineTo((this.x - this.s/2), this.y + (1.732 * (this.s/2)));
+
         this.ctx.closePath();
         this.ctx.strokeStyle = this.color;
         this.ctx.lineWidth = this.lineWidth;
@@ -243,6 +248,31 @@ class PolygonParticles {
         this.y += drift;
     }
 }
+
+const pentagonInit = () => {
+    for (let i = 0; i < 5; i++) {
+        let x = Math.random() * canvas.width;
+        let y = Math.random() * canvas.height;
+        let radius = Math.random() * 40 + 10;
+        let sides = Math.random() * 5;
+
+        let lineWidth = Math.random() * 40 + 15;
+
+        let color = colors[Math.floor(Math.random() * colors.length)];
+
+        pentagonParticlesArray.push(new PentagonParticles(
+            ctx,
+            x,
+            y,
+            radius,
+            sides,
+            color,
+            lineWidth,
+            "round"
+        ))
+    }
+}
+pentagonInit();
 
 class HexagonParticles {
     constructor(ctx, x, y, sides, lineWidth, color, joinStyle = "miter") {
@@ -279,31 +309,6 @@ class HexagonParticles {
         this.y += drift;
     }
 }
-
-const polygonInit = () => {
-    for (let i = 0; i < 5; i++) {
-        let x = Math.random() * canvas.width;
-        let y = Math.random() * canvas.height;
-        let radius = Math.random() * 40 + 10;
-        let sides = Math.random() * 5;
-
-        let lineWidth = Math.random() * 30 + 8;
-
-        let color = colors[Math.floor(Math.random() * colors.length)];
-
-        polygonParticlesArray.push(new PolygonParticles(
-            ctx,
-            x,
-            y,
-            radius,
-            sides,
-            color,
-            lineWidth,
-            "round"
-        ))
-    }
-}
-polygonInit();
 
 const hexagonInit = () => {
     for (let i = 0; i < 5; i++) {
@@ -389,7 +394,7 @@ diamondInit();
 function animateSquares() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // particleHandler(polygonParticlesArray);
+    particleHandler(pentagonParticlesArray);
     particleHandler(hexagonParticlesArray)
 
     particleHandler(squareParticlesArray);
