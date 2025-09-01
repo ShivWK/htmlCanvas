@@ -16,9 +16,6 @@ let colors = ["rgba(3,252,157,0.6)", "rgba(8, 230, 0, 0.6)", "rgba(252, 69, 3, 0
 window.addEventListener("resize", () => {
     canvas.width = window.innerWidth;
     canvas.height = document.documentElement.scrollHeight;
-
-    // circleInit();
-    // squareInit();
 })
 
 function particleHandler(particleArray) {

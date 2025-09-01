@@ -7,7 +7,7 @@ p {
     color: white;
 }
 
-html {
+/* html {
     height: 100vh;
 }
 
@@ -15,7 +15,7 @@ body {
     height: 300%;
     width: 100vw;
     overflow-x: hidden;
-}
+} */
 
 #canvas1 {
     position: absolute;
