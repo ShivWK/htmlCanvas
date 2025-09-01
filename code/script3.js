@@ -11,7 +11,7 @@ let pentagonParticlesArray = [];
 let diamondParticlesArray = [];
 let hexagonParticlesArray = [];
 
-let colors = ["rgba(3,252,157,0.5)", "rgba(8, 230, 0, 0.77)", "rgba(252, 69, 3, 0.66)", "rgba(248, 252, 3, 0.8)", "rgba(3, 177, 252, 0.7)", "rgba(252, 3, 3, 0.69)", "rgba(103, 122, 112, 0.8)", "rgba(122, 233, 174, 0.6)", "rgba(255, 255, 255, 0.5)"];
+let colors = ["rgba(3,252,157,0.6)", "rgba(8, 230, 0, 0.6)", "rgba(252, 69, 3, 0.6)", "rgba(248, 252, 3, 0.6)", "rgba(3, 177, 252, 0.6)", "rgba(252, 3, 3, 0.6)", "rgba(103, 122, 112, 0.6)", "rgba(122, 233, 174, 0.6)", "rgba(255, 255, 255, 0.6)"];
 
 window.addEventListener("resize", () => {
     canvas.width = window.innerWidth;
