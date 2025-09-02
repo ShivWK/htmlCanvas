@@ -33,7 +33,7 @@ class CircleParticles {
         this.size = size;
         this.color = color;
         this.lineWidth = lineWidth;
-        this.directionY = 1;
+        this.directionY = -1;
         this.directionX = 1;
     }
 
@@ -252,9 +252,7 @@ const pentagonInit = () => {
         let y = Math.random() * canvas.height;
         let radius = Math.random() * 40 + 10;
         let sides = Math.random() * 5;
-
         let lineWidth = Math.random() * 40 + 15;
-
         let color = colors[Math.floor(Math.random() * colors.length)];
 
         pentagonParticlesArray.push(new PentagonParticles(
@@ -340,7 +338,7 @@ class DiamondParticles {
         this.lineWidth = lineWidth;
         this.color = color;
         this.joinStyle = joinStyle;
-        this.direction = 1;
+        this.direction = -1;
     }
 
     draw() {

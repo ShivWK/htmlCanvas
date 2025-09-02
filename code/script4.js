@@ -1,15 +1,16 @@
-const canvas = document.getElementById("canvas1");
-const ctx = canvas.getContext("2d");
+const canvas2 = document.getElementById("canvas2");
+const hero = document.getElementById("hero")
+const ctx2 = canvas2.getContext("2d");
 
-canvas.height = window.innerHeight;
-canvas.width = window.innerWidth;
+canvas2.width = hero.offsetWidth;
+canvas2.height = hero.offsetHeight;
 
 let particleArray = [];
 
 window.addEventListener("resize", () => {
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
-    mouse.radius = (canvas.height / 90) * (canvas.width / 90);
+    canvas2.height = hero.offsetWidth;
+    canvas2.width = hero.offsetHeight;
+    mouse.radius = (canvas2.height / 80) * (canvas2.width / 80);
     // init();
 });
 
@@ -26,7 +27,7 @@ window.addEventListener("mouseout", () => {
 let mouse = {
     x: null,
     y: null,
-    radius: (canvas.height / 90) * (canvas.width / 90),
+    radius: (canvas2.height / 80) * (canvas2.width / 80),
 }
 
 class Particle {
@@ -40,20 +41,20 @@ class Particle {
     }
 
     draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-        ctx.fillStyle = this.color;
-        ctx.fill();
+        ctx2.beginPath();
+        ctx2.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+        ctx2.fillStyle = this.color;
+        ctx2.fill();
     }
 
     update(scrollOffset = 0) {
         const drift = scrollOffset * 0.02;
         // boundary check
-        if (this.x > canvas.width || this.x < 0) {
+        if (this.x > canvas2.width || this.x < 0) {
             this.directionX = -this.directionX;
         }
 
-        if (this.y > canvas.height || this.y < 0) {
+        if (this.y > canvas2.height || this.y < 0) {
             this.directionY = -this.directionY;
         }
 
@@ -66,7 +67,7 @@ class Particle {
         if (distance < mouse.radius + this.size) {
             // mouse and particle collides
 
-            if (mouse.x < this.x && this.x < canvas.width - this.size + 10) {
+            if (mouse.x < this.x && this.x < canvas2.width - this.size + 10) {
                 //check if particle is in right of the mouse so move it in right
                 this.x += 3;
             }
@@ -75,7 +76,7 @@ class Particle {
                 this.x -= 3;
             }
 
-            if (mouse.y < this.y && this.y < canvas.height - this.size + 10) {
+            if (mouse.y < this.y && this.y < canvas2.height - this.size + 10) {
                 this.y += 3;
             }
 
@@ -94,15 +95,15 @@ class Particle {
 }
 
 function init() {
-    let numberOfParticles = (canvas.height * canvas.width) / 6000 + 150;
+    let numberOfParticles = (canvas2.height * canvas2.width) / 6000 + 180;
 
     for (let i = 0; i < numberOfParticles; i++) {
         let size = (Math.random() * 3) + 1;
-        let x = (Math.random() * ((canvas.width - (size * 2)) - (size * 2)) + (size * 2));
-        let y = (Math.random() * ((canvas.height - (size * 2)) - (size * 2)) + (size * 2));
+        let x = (Math.random() * ((canvas2.width - (size * 2)) - (size * 2)) + (size * 2));
+        let y = (Math.random() * ((canvas2.height - (size * 2)) - (size * 2)) + (size * 2));
         let directionX = (Math.random() * 1) - 0.5;
         let directionY = (Math.random() * 1) - 0.5;
-        let color = "#ff5200";
+        let color = "#0099ffff";
 
         particleArray.push(new Particle(x, y, directionX, directionY, size, color));
     }
@@ -116,13 +117,13 @@ function connect() {
             let dy = particleArray[a].y - particleArray[b].y;
             let distance = dx*dx + dy*dy;
 
-            if (distance < (canvas.width/11) * (canvas.height)/11) {
-                ctx.strokeStyle = "rgba(255, 81, 0, 0.49)",
-                ctx.lineWidth = 1;
-                ctx.beginPath();
-                ctx.moveTo(particleArray[a].x, particleArray[a].y);
-                ctx.lineTo(particleArray[b].x, particleArray[b].y);
-                ctx.stroke()
+            if (distance < (canvas2.width/11) * (canvas2.height)/11) {
+                ctx2.strokeStyle = "rgba(24, 117, 179, 0.49)",
+                ctx2.lineWidth = 1;
+                ctx2.beginPath();
+                ctx2.moveTo(particleArray[a].x, particleArray[a].y);
+                ctx2.lineTo(particleArray[b].x, particleArray[b].y);
+                ctx2.stroke()
             }
          }
     }
@@ -136,7 +137,7 @@ function particleHandler(particleArray) {
 }
 
 function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
     particleHandler(particleArray);
     connect()
     requestAnimationFrame(animate);
