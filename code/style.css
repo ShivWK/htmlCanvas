@@ -19,9 +19,9 @@ body {
 
 #canvas1 {
     position: absolute;
-    background: linear-gradient(135deg, #0d0d0f, #1a1a2e, #0f3460);
+    background: linear-gradient(135deg,  #000000 0%,  #00111a 40%, #012b55 70%, #021120 100%);
     background-size: 500% 500%;
-    animation: gradientMove 20s ease infinite;
+    animation: gradientMove 30s ease infinite;
     top: 0;
     left: 0;
     z-index: -100;
