@@ -41,7 +41,8 @@ class Particle {
         ctx.fill();
     }
 
-    update() {
+    update(scrollOffset = 0) {
+        const drift = scrollOffset * 0.02;
         // boundary check
         if (this.x > canvas.width || this.x < 0) {
             this.directionX = -this.directionX;
@@ -82,6 +83,8 @@ class Particle {
 
         this.x += this.directionX;
         this.y += this.directionY;
+
+        this.y += drift;
     }
 }
 
@@ -89,11 +92,11 @@ function init() {
     let numberOfParticles = (canvas.height * canvas.width) / 6000 + 30;
 
     for (let i = 0; i < numberOfParticles; i++) {
-        let size = (Math.random() * 5) + 1;
+        let size = (Math.random() * 3) + 1;
         let x = (Math.random() * ((canvas.width - (size * 2)) - (size * 2)) + (size * 2));
         let y = (Math.random() * ((canvas.height - (size * 2)) - (size * 2)) + (size * 2));
-        let directionX = (Math.random() * 5) - 2.5;
-        let directionY = (Math.random() * 5) - 2.5;
+        let directionX = (Math.random() * 2) - 1;
+        let directionY = (Math.random() * 2) - 1;
         let color = "#ff5200";
 
         particleArray.push(new Particle(x, y, directionX, directionY, size, color));
@@ -108,8 +111,8 @@ function connect() {
             let dy = particleArray[a].y - particleArray[b].y;
             let distance = dx*dx + dy*dy;
 
-            if (distance < (canvas.width/7) * (canvas.height)/7) {
-                ctx.strokeStyle = "#ff5200",
+            if (distance < (canvas.width/9) * (canvas.height)/9) {
+                ctx.strokeStyle = "#ff51007c",
                 ctx.lineWidth = 1;
                 ctx.beginPath();
                 ctx.moveTo(particleArray[a].x, particleArray[a].y);
