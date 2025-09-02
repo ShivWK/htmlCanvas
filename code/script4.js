@@ -9,19 +9,24 @@ let particleArray = [];
 window.addEventListener("resize", () => {
     canvas.height = window.innerHeight;
     canvas.width = window.innerWidth;
-    mouse.radius = (canvas.height / 80) * (canvas.width / 80);
+    mouse.radius = (canvas.height / 90) * (canvas.width / 90);
     // init();
 });
 
 window.addEventListener("mousemove", (event) => {
     mouse.x = event.x;
     mouse.y = event.y;
-})
+});
+
+window.addEventListener("mouseout", () => {
+    mouse.x = undefined;
+    mouse.y = undefined;
+});
 
 let mouse = {
     x: null,
     y: null,
-    radius: (canvas.height / 80) * (canvas.width / 80),
+    radius: (canvas.height / 90) * (canvas.width / 90),
 }
 
 class Particle {
@@ -89,14 +94,14 @@ class Particle {
 }
 
 function init() {
-    let numberOfParticles = (canvas.height * canvas.width) / 6000 + 30;
+    let numberOfParticles = (canvas.height * canvas.width) / 6000 + 100;
 
     for (let i = 0; i < numberOfParticles; i++) {
         let size = (Math.random() * 3) + 1;
         let x = (Math.random() * ((canvas.width - (size * 2)) - (size * 2)) + (size * 2));
         let y = (Math.random() * ((canvas.height - (size * 2)) - (size * 2)) + (size * 2));
-        let directionX = (Math.random() * 2) - 1;
-        let directionY = (Math.random() * 2) - 1;
+        let directionX = (Math.random() * 1) - 0.5;
+        let directionY = (Math.random() * 1) - 0.5;
         let color = "#ff5200";
 
         particleArray.push(new Particle(x, y, directionX, directionY, size, color));
@@ -111,8 +116,8 @@ function connect() {
             let dy = particleArray[a].y - particleArray[b].y;
             let distance = dx*dx + dy*dy;
 
-            if (distance < (canvas.width/9) * (canvas.height)/9) {
-                ctx.strokeStyle = "#ff51007c",
+            if (distance < (canvas.width/10) * (canvas.height)/10) {
+                ctx.strokeStyle = "rgba(255, 81, 0, 0.49)",
                 ctx.lineWidth = 1;
                 ctx.beginPath();
                 ctx.moveTo(particleArray[a].x, particleArray[a].y);
