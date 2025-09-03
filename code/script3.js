@@ -17,8 +17,8 @@ window.addEventListener("resize", () => {
     canvas.width = window.innerWidth;
     canvas.height = document.documentElement.scrollHeight;
 
-    canvas.style.width = window.innerWidth + "px";
-    canvas.style.height = document.documentElement.scrollHeight + "px";
+    // canvas.style.width = window.innerWidth + "px";
+    // canvas.style.height = document.documentElement.scrollHeight + "px";
 })
 
 function particleHandler(particleArray) {

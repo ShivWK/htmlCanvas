@@ -12,8 +12,8 @@ window.addEventListener("resize", () => {
     canvas2.width = hero.offsetHeight;
     mouse.radius = (canvas2.height / 80) * (canvas2.width / 80);
 
-    canvas.style.width = hero.offsetWidth + "px";
-    canvas.style.height = hero.offsetHeight + "px";
+    // canvas.style.width = hero.offsetWidth + "px";
+    // canvas.style.height = hero.offsetHeight + "px";
 });
 
 window.addEventListener("mousemove", (event) => {
