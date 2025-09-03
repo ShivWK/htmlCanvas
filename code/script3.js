@@ -1,8 +1,9 @@
 const canvas = document.getElementById("canvas1");
 const ctx = canvas.getContext("2d");
+const dpr = window.devicePixelRatio || 1;
 
-canvas.width = window.innerWidth;
-canvas.height = document.documentElement.scrollHeight;
+canvas.width = window.innerWidth * dpr;
+canvas.height = document.documentElement.scrollHeight * dpr;
 
 let circleParticlesArray = [];
 let triangleParticlesArray = [];
@@ -14,8 +15,8 @@ let hexagonParticlesArray = [];
 let colors = ["rgba(3,252,157,0.6)", "rgba(8, 230, 0, 0.6)", "rgba(252, 69, 3, 0.6)", "rgba(248, 252, 3, 0.6)", "rgba(3, 177, 252, 0.6)", "rgba(252, 3, 3, 0.6)", "rgba(103, 122, 112, 0.6)", "rgba(122, 233, 174, 0.6)", "rgba(255, 255, 255, 0.6)"];
 
 window.addEventListener("resize", () => {
-    canvas.width = window.innerWidth;
-    canvas.height = document.documentElement.scrollHeight;
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = document.documentElement.scrollHeight * dpr;
 })
 
 function particleHandler(particleArray) {
