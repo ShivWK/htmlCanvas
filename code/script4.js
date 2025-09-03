@@ -1,24 +1,19 @@
 const canvas2 = document.getElementById("canvas2");
 const hero = document.getElementById("hero")
 const ctx2 = canvas2.getContext("2d");
-const dpr2 = window.devicePixelRatio || 1;
 
-canvas2.width = hero.offsetWidth * dpr2;
-canvas2.height = hero.offsetHeight * dpr2;
+canvas2.width = hero.offsetWidth;
+canvas2.height = hero.offsetHeight;
 
 let particleArray = [];
 
 window.addEventListener("resize", () => {
-    canvas2.height = hero.offsetWidth * dpr2;
-    canvas2.width = hero.offsetHeight * dpr2;
+    canvas2.height = hero.offsetWidth;
+    canvas2.width = hero.offsetHeight;
     mouse.radius = (canvas2.height / 80) * (canvas2.width / 80);
 
     canvas.style.width = hero.offsetWidth + "px";
     canvas.style.height = hero.offsetHeight + "px";
-
-    // Scale the context so drawing doesn’t shrink
-    ctx2.setTransform(1, 0, 0, 1, 0, 0); // reset any scale
-    ctx2.scale(dpr, dpr);
 });
 
 window.addEventListener("mousemove", (event) => {

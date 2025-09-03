@@ -1,9 +1,8 @@
 const canvas = document.getElementById("canvas1");
 const ctx = canvas.getContext("2d");
-const dpr = window.devicePixelRatio || 1;
 
-canvas.width = window.innerWidth * dpr;
-canvas.height = document.documentElement.scrollHeight * dpr;
+canvas.width = window.innerWidth;
+canvas.height = document.documentElement.scrollHeight;
 
 let circleParticlesArray = [];
 let triangleParticlesArray = [];
@@ -15,15 +14,11 @@ let hexagonParticlesArray = [];
 let colors = ["rgba(3,252,157,0.6)", "rgba(8, 230, 0, 0.6)", "rgba(252, 69, 3, 0.6)", "rgba(248, 252, 3, 0.6)", "rgba(3, 177, 252, 0.6)", "rgba(252, 3, 3, 0.6)", "rgba(103, 122, 112, 0.6)", "rgba(122, 233, 174, 0.6)", "rgba(255, 255, 255, 0.6)"];
 
 window.addEventListener("resize", () => {
-    canvas.width = window.innerWidth * dpr;
-    canvas.height = document.documentElement.scrollHeight * dpr;
+    canvas.width = window.innerWidth;
+    canvas.height = document.documentElement.scrollHeight;
 
     canvas.style.width = window.innerWidth + "px";
     canvas.style.height = document.documentElement.scrollHeight + "px";
-
-    // Scale the context so drawing doesn’t shrink
-    ctx.setTransform(1, 0, 0, 1, 0, 0); // reset any scale
-    ctx.scale(dpr, dpr);
 })
 
 function particleHandler(particleArray) {
