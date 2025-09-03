@@ -15,7 +15,7 @@ html {
 
 body {
     height: 300%;
-    width: 100vw;
+    width: 100%;
     overflow-x: hidden;
     background: linear-gradient(135deg, #000000 0%, #01111a 40%, #011d3a 70%, #021120 100%);
     background-repeat: no-repeat;
