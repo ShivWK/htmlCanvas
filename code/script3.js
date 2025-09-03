@@ -17,6 +17,13 @@ let colors = ["rgba(3,252,157,0.6)", "rgba(8, 230, 0, 0.6)", "rgba(252, 69, 3, 0
 window.addEventListener("resize", () => {
     canvas.width = window.innerWidth * dpr;
     canvas.height = document.documentElement.scrollHeight * dpr;
+
+    canvas.style.width = window.innerWidth + "px";
+    canvas.style.height = document.documentElement.scrollHeight + "px";
+
+    // Scale the context so drawing doesn’t shrink
+    ctx.setTransform(1, 0, 0, 1, 0, 0); // reset any scale
+    ctx.scale(dpr, dpr);
 })
 
 function particleHandler(particleArray) {
@@ -226,12 +233,12 @@ class PentagonParticles {
 
     draw() {
         this.ctx.beginPath();
-        
+
         this.ctx.moveTo(this.x, this.y);
-        this.ctx.lineTo((this.x + this.s/2), this.y + (1.732 * (this.s/2)));
-        this.ctx.lineTo((this.x + this.s/2), this.y + this.s + (1.732 * (this.s/2)));
-        this.ctx.lineTo((this.x - this.s/2), this.y + this.s + (1.732 * (this.s/2)));
-        this.ctx.lineTo((this.x - this.s/2), this.y + (1.732 * (this.s/2)));
+        this.ctx.lineTo((this.x + this.s / 2), this.y + (1.732 * (this.s / 2)));
+        this.ctx.lineTo((this.x + this.s / 2), this.y + this.s + (1.732 * (this.s / 2)));
+        this.ctx.lineTo((this.x - this.s / 2), this.y + this.s + (1.732 * (this.s / 2)));
+        this.ctx.lineTo((this.x - this.s / 2), this.y + (1.732 * (this.s / 2)));
 
         this.ctx.closePath();
         this.ctx.strokeStyle = this.color;
@@ -284,13 +291,13 @@ class HexagonParticles {
     draw() {
         if (this.s < 3) return;
         this.ctx.beginPath();
-        
+
         this.ctx.moveTo(this.x, this.y);
         this.ctx.lineTo((this.x + this.s), this.y);
-        this.ctx.lineTo((this.x + this.s + this.s/2), (this.y + 1.732 * this.s/2 ));
-        this.ctx.lineTo((this.x + this.s), (this.y + 2*(1.732 * this.s/2) ));
-        this.ctx.lineTo(this.x, (this.y + 2*(1.732 * this.s/2) ));
-        this.ctx.lineTo((this.x - this.s/2), (this.y + 1.732 * this.s/2 ));
+        this.ctx.lineTo((this.x + this.s + this.s / 2), (this.y + 1.732 * this.s / 2));
+        this.ctx.lineTo((this.x + this.s), (this.y + 2 * (1.732 * this.s / 2)));
+        this.ctx.lineTo(this.x, (this.y + 2 * (1.732 * this.s / 2)));
+        this.ctx.lineTo((this.x - this.s / 2), (this.y + 1.732 * this.s / 2));
 
         this.ctx.closePath();
         this.ctx.strokeStyle = this.color;

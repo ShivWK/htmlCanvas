@@ -12,6 +12,13 @@ window.addEventListener("resize", () => {
     canvas2.height = hero.offsetWidth * dpr2;
     canvas2.width = hero.offsetHeight * dpr2;
     mouse.radius = (canvas2.height / 80) * (canvas2.width / 80);
+
+    canvas.style.width = hero.offsetWidth + "px";
+    canvas.style.height = hero.offsetHeight + "px";
+
+    // Scale the context so drawing doesn’t shrink
+    ctx2.setTransform(1, 0, 0, 1, 0, 0); // reset any scale
+    ctx2.scale(dpr, dpr);
 });
 
 window.addEventListener("mousemove", (event) => {
@@ -115,17 +122,17 @@ function connect() {
         for (let b = 0; b < particleArray.length; b++) {
             let dx = particleArray[a].x - particleArray[b].x;
             let dy = particleArray[a].y - particleArray[b].y;
-            let distance = dx*dx + dy*dy;
+            let distance = dx * dx + dy * dy;
 
-            if (distance < (canvas2.width/11) * (canvas2.height)/11) {
+            if (distance < (canvas2.width / 11) * (canvas2.height) / 11) {
                 ctx2.strokeStyle = "rgba(24, 117, 179, 0.49)",
-                ctx2.lineWidth = 1;
+                    ctx2.lineWidth = 1;
                 ctx2.beginPath();
                 ctx2.moveTo(particleArray[a].x, particleArray[a].y);
                 ctx2.lineTo(particleArray[b].x, particleArray[b].y);
                 ctx2.stroke()
             }
-         }
+        }
     }
 }
 
